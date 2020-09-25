@@ -87,3 +87,34 @@ plot_multiline = function(series_1, label_1, series_2, label_2, colour_1="red", 
         col=c(colour_1, colour_2), lty=1:1, cex=0.8)
     dev.off()
 }
+
+all_are_numeric = function(series) {
+    for(elem in series) {
+        if(! is.numeric(elem) || is.na(elem)) {
+            return(FALSE)
+        }
+    }
+    return (TRUE)
+}
+
+get_moving_averages = function(series, moving_average_bin_size) {
+    length_of_series = length(series)
+    moving_averages = c()
+    elements_before_average = floor(moving_average_bin_size / 2)
+    elements_after_average = ceiling(moving_average_bin_size / 2) - 1
+    moving_averages_end_at = length_of_series - elements_after_average
+    number_of_moving_averages = moving_averages_end_at - elements_before_average
+    first_index_for_average = 1
+    for (i in seq(1, number_of_moving_averages)) {
+        subset_to_find_average = series[first_index_for_average:(first_index_for_average + moving_average_bin_size - 1)]
+        if(all_are_numeric(subset_to_find_average)) {
+            moving_averages = c(moving_averages, mean(subset_to_find_average))
+        } else {
+            moving_averages = c(moving_averages, NA)
+        }
+        first_index_for_average = first_index_for_average + 1
+    }
+    moving_averages = c(rep(NA, elements_before_average), moving_averages)
+    moving_averages = c(moving_averages, rep(NA, elements_after_average))
+    return (moving_averages)
+}
