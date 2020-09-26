@@ -97,11 +97,11 @@ all_are_numeric = function(series) {
     return (TRUE)
 }
 
-get_moving_averages = function(series, moving_average_bin_size) {
+get_moving_averages = function(series, moving_average_bin_size, output_offset=0) {
     length_of_series = length(series)
     moving_averages = c()
-    elements_before_average = floor(moving_average_bin_size / 2)
-    elements_after_average = ceiling(moving_average_bin_size / 2) - 1
+    elements_before_average = floor(moving_average_bin_size / 2) + output_offset #Make this a separate function, write tests
+    elements_after_average = ceiling(moving_average_bin_size / 2) - 1 - output_offset
     moving_averages_end_at = length_of_series - elements_after_average
     number_of_moving_averages = moving_averages_end_at - elements_before_average
     first_index_for_average = 1
