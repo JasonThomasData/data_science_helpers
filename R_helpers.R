@@ -114,7 +114,11 @@ get_moving_averages = function(series, moving_average_bin_size, output_offset=0)
         }
         first_index_for_average = first_index_for_average + 1
     }
-    moving_averages = c(rep(NA, elements_before_average), moving_averages)
-    moving_averages = c(moving_averages, rep(NA, elements_after_average))
+    if(elements_before_average > 0) {
+        moving_averages = c(rep(NA, elements_before_average), moving_averages)
+    }
+    if(elements_after_average > 0) {
+        moving_averages = c(moving_averages, rep(NA, elements_after_average))
+    }
     return (moving_averages)
 }
