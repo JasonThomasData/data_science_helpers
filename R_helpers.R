@@ -122,3 +122,45 @@ get_moving_averages = function(series, moving_average_bin_size, output_offset=0)
     }
     return (moving_averages)
 }
+
+check_weights = function(operands, weights) {
+  operands_count = length(operands)
+  weights_count = length(weights)
+  if(typeof(weights) != "double") {
+    stop("Weights should be a vector of doubles") 
+  }
+  if(weights_count != operands_count) {
+    stop(sprintf("There are %s weights and %s operands", weights_count, operands_count)) 
+  }
+}
+
+geometric_mean = function(operands, weights=NULL) {
+  if(typeof(operands)!="double") {
+    stop("Operands should be a vector of doubles")
+  }
+  if(!is.null(weights)) {
+    check_weights(operands, weights)
+    return (prod(operands ^ weights) ^ (1/sum(weights)))
+  }
+  return (prod(operands) ^ (1/length(operands)))
+}
+
+power_mean = function(operands, power, weights=NULL) {
+  # p =-1 harmonic mean
+  # p = 0 geometric mean
+  # p = 1 arithmetic mean
+  if(power == 0) {
+    #Cannot have anything to the power of zero, as it always returns 1. The power mean would work if the p was approaching zero, as the mean would approach the geometric mean
+    geometric_mean(operands, weights)
+  } else {
+    if(typeof(operands)!="double") {
+      stop("Operands should be a vector of doubles")
+    }
+    if(!is.null(weights)) {
+      check_weights(operands, weights)
+      #operands = operands * weights
+      return ((sum(weights*operands^power)/sum(weights))^(1/power))
+    }
+    return ((sum(operands^power) / length(operands))^(1/power))
+  }
+}
