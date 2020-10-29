@@ -80,7 +80,7 @@ summarise = function(data, row_header) {
 }
 
 plot_multiline = function(series_1, label_1, series_2, label_2, colour_1="red", colour_2="green", filename="multiline.jpg") {
-    y_upper_limit = max(c(max(series_1), max(series_2)))
+    y_upper_limit = max(series_1, series_2)
     jpeg(file = filename)
     plot(series_1, ylim=c(0,y_upper_limit), type="l", col=colour_1, ylab="Y")
     lines(series_2, col=colour_2)
