@@ -80,8 +80,9 @@ summarise = function(data, row_header) {
 }
 
 plot_multiline = function(series_1, label_1, series_2, label_2, colour_1="red", colour_2="green", filename="multiline.jpg") {
+    y_upper_limit = max(c(max(series_1), max(series_2)))
     jpeg(file = filename)
-    plot(series_1, ylim=c(0,1), type="l", col=colour_1, ylab="Y")
+    plot(series_1, ylim=c(0,y_upper_limit), type="l", col=colour_1, ylab="Y")
     lines(series_2, col=colour_2)
     legend("topleft", legend=c(label_1, label_2),
         col=c(colour_1, colour_2), lty=1:1, cex=0.8)
@@ -164,3 +165,11 @@ power_mean = function(operands, power, weights=NULL) {
     return ((sum(operands^power) / length(operands))^(1/power))
   }
 }
+
+get_linear_model = function(independent, dependent) {
+    df = data.frame(independent)
+    df$dependent = dependent 
+    linear_model = lm(dependent~independent, data=df)
+    return (linear_model)
+}
+
