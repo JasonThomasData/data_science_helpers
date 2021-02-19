@@ -1,5 +1,10 @@
-#install.packages("nortest")
-library(nortest)
+packages = c("nortest")
+for(package in packages) {
+    if (!require(package, character.only = TRUE)) {
+        install.packages(package, dependencies = TRUE)
+    }
+    library(package, character.only = TRUE)
+}
 
 get_linear_intersection = function(y_int_1, gradient_1, y_int_2=NULL, gradient_2=NULL) {
     # This is expected to work for linear functions only. Quadratics etc are not gauranteed to have an x intercept
@@ -81,6 +86,7 @@ summarise = function(data, row_header) {
 
 plot_multiline = function(series_1, label_1, series_2, label_2, colour_1="red", colour_2="green", filename="multiline.jpg") {
     y_upper_limit = max(series_1, series_2)
+    print(y_upper_limit)
     jpeg(file = filename)
     plot(series_1, ylim=c(0,y_upper_limit), type="l", col=colour_1, ylab="Y")
     lines(series_2, col=colour_2)
