@@ -1,7 +1,10 @@
-#install.packages("nortest")
-library(nortest)
-#install.packages("tidyr")
-library(tidyr)
+packages = c("nortest", "tidyr", "jsonlite")
+for(package in packages) {
+    if (!require(package, character.only = TRUE)) {
+        install.packages(package, dependencies = TRUE)
+    }
+    library(package, character.only = TRUE)
+}
 
 get_linear_intersection = function(y_int_1, gradient_1, y_int_2=NULL, gradient_2=NULL) {
     # This is expected to work for linear functions only. Quadratics etc are not gauranteed to have an x intercept
